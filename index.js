@@ -28,6 +28,7 @@ async function run() {
     const usercollection = client.db("naturaDb").collection("users");
     const reviewscollection = client.db("naturaDb").collection("reviews");
     const newslettercollection = client.db("naturaDb").collection("newsletter");
+    const trainerscollection = client.db("naturaDb").collection("trainers");
 
     //user related api
     app.post("/users", async (req, res) => {
@@ -41,13 +42,19 @@ async function run() {
       res.send(result);
     });
 
+    //trainer reated api
+    app.get("/trainers", async (req, res) => {
+      const result = await trainerscollection.find().toArray();
+      res.send(result);
+    });
+
     //reviews related api
     app.get("/reviews", async (req, res) => {
       const result = await reviewscollection.find().toArray();
       res.send(result);
     });
 
-    //newsletter
+    //newsletter related api
     app.post("/newsletter", async (req, res) => {
       const newsletter = req.body;
       const query = { email: newsletter.email };
