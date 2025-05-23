@@ -29,6 +29,7 @@ async function run() {
     const reviewscollection = client.db("naturaDb").collection("reviews");
     const newslettercollection = client.db("naturaDb").collection("newsletter");
     const trainerscollection = client.db("naturaDb").collection("trainers");
+    const classesscollection = client.db("naturaDb").collection("classess");
 
     //user related api
     app.post("/users", async (req, res) => {
@@ -52,6 +53,18 @@ async function run() {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await trainerscollection.findOne(query);
+      res.send(result);
+    });
+
+    //classess related api
+    app.get("/allclassess", async (req, res) => {
+      let query = {};
+      const search = req.query?.search;
+      console.log(req.query);
+      if (search) {
+        query.name = { $regex: search, $options: "i" };
+      }
+      const result = await classesscollection.find(query).toArray();
       res.send(result);
     });
 
